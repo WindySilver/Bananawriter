@@ -1,0 +1,5 @@
+[WRITE]
+Without parameters, writes 55 bananas. To change the word, give the word you want to be repeated. To change the wordcount, give the number and the word you want to repeat. E.g. "3banana" gives 3 bananas, "10orange" gives 10 oranges and "pineapple" gives 55 pineapples.
+
+[HELP]
+Takes the name of a command as its parameter and tells what it does.
