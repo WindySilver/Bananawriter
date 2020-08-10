@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import fi.jyu.mit.ohj2.Help;
 import fi.jyu.mit.ohj2.Mjonot;
@@ -10,13 +11,15 @@ import fi.jyu.mit.ohj2.Syotto;
 
 
 /**
- * April Fool's 2021
+ * Made for April Fool's 2021.
+ * Has a group of commands, the description of which you can get by "help commandname" or "? commandname":
+ * Write, Randomize
  * @author WindySilver
  * @version 3.8.2020
  */
 public class Main {
 
-    
+
     /**
      *  Executes a command.
      */
@@ -28,9 +31,6 @@ public class Main {
         String execute(String parameters);
     }
 
-
-    
-    
 
     /**
      * Gives help.
@@ -63,9 +63,7 @@ public class Main {
         
     }
 
-    
 
-        
     /**
      * Writes either 55 bananas or something else, depending on the input input.
      * The first word's first letter is uppercase and the writing ends with a dot.
@@ -81,8 +79,16 @@ public class Main {
         }
         
         private static String write(String parameter) {
-            int length = Mjonot.erotaInt(parameter, 55);
-            String word = parameter.replaceAll("[0-9]","");;
+            int length = Mjonot.erotaInt(parameter, 0);
+            int sizelength = String.valueOf(length).length();
+            String word = null;
+            if (length != 0) {
+            word = parameter.substring(sizelength);
+            }
+            else {
+                length = 55;
+                word = parameter;
+            }
             if (parameter == "") word = "banana";
             StringBuilder output = new StringBuilder(word.substring(0, 1).toUpperCase() + word.substring(1));
             for (int i = 1; i<length;i++) {
@@ -93,9 +99,60 @@ public class Main {
         }
     }
 
-        
 
-    
+    /**
+     * Writes either 55 randomized bananas, oranges and pineapples or something else, depending on the input input.
+     * The first word's first letter is uppercase and the writing ends with a dot.
+     * Format inputting: "numberword1 word2 word3", e.g. "300orange banana", "4apple pineapple grape pear orange", "17banana orange pineapple".
+     * @author WindySilver
+     * @version 3.8.2020
+     *
+     */
+    public static class Randomizer implements CommandInterface {
+        @Override
+        public String execute(String parameter) {
+            return (write(parameter));
+        }
+        
+        private static String write(String parameter) {
+            int length = Mjonot.erotaInt(parameter, 0);
+            int sizelength = String.valueOf(length).length();
+            String word = null;
+            if (length != 0) {
+            word = parameter.substring(sizelength);
+            }
+            else {
+                length = 55;
+                word = parameter;
+            }
+            if (parameter == "") word = "banana orange pineapple";
+            List<String> words = separateWords(word);
+            return (randomize(words, length));
+        } 
+        
+        private static List<String> separateWords(String parameter) {
+            List<String> result = new ArrayList<String>();
+            StringBuilder editing = new StringBuilder(parameter).append(" ");
+            while(editing.indexOf(" ") != -1) {
+                result.add(editing.substring(0, editing.indexOf(" ")));
+                editing = editing.delete(0, editing.indexOf(" ")+1);
+            }
+            return result;
+        }
+        
+        private static String randomize(List<String> list, int length) {
+            Random random = new Random();
+            String first = list.get(random.nextInt(list.size()));
+            StringBuilder output = new StringBuilder(first.substring(0, 1).toUpperCase() + first.substring(1));
+            for (int i = 1; i<length;i++) {
+                output.append(" " + list.get(random.nextInt(list.size())));
+            }
+            output.append(".");
+            return(output.toString());
+        }
+    }
+
+
     /**
      * The command's name and function.
      */
@@ -127,12 +184,8 @@ public class Main {
         public CommandInterface getCommand() {
             return command;
         }
-        
-
-
-        
     }
-    
+
 
     /**
      * Lista komennoista ja metodit etsimiseksi ja suorittamiseksi.
@@ -165,9 +218,8 @@ public class Main {
             
             if (rightCommand == null) return ("I don't know the command " + begin + "!");
             return rightCommand.command.execute(end);
-            
         }
-        
+
 
         private boolean isHelp(String s) {
             return (isRight("?", s) || isRight("apua", s));
@@ -196,10 +248,9 @@ public class Main {
         public void add(Command command) {
             commands.add(command);
         }
-        
     }
-    
-    
+
+
     /**
      * The main program.
      * @param args Not used.
@@ -208,6 +259,7 @@ public class Main {
         Commands commands = new Commands();
         Helper hjelp = new Helper("command.txt");
         commands.add(new Command("write", new Writer()));
+        commands.add(new Command("randomize", new Randomizer()));
         commands.add(new Command("?", hjelp));
         commands.add(new Command("help", hjelp));
 
@@ -220,5 +272,4 @@ public class Main {
             System.out.println(result);
         }
     }
-    
 }
