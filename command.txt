@@ -4,5 +4,11 @@ Without parameters, writes 55 bananas. To change the word, give the word you wan
 [RANDOMIZE]
 Without parameters, writes 55 bananas, oranges and pineapples in a random order. To change the words, give the words you want to be repeated and randomized. To change the wordcount, give the number and the words you want to repeat in the format of: "numberword1 word2 word3", e.g. "300orange banana" (which gives 300 oranges and bananas in a random order), "4apple pineapple grape pear orange" (which gives a random selection of 4 of those fruits in a random order), "17banana orange pineapple" (17 bananas, oranges and pineapples in a random order).
 
+[EXIT]
+Exits the application.
+
 [HELP]
+Takes the name of a command as its parameter and tells what it does.
+
+[?]
 Takes the name of a command as its parameter and tells what it does.

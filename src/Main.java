@@ -13,9 +13,9 @@ import fi.jyu.mit.ohj2.Syotto;
 /**
  * Made for April Fool's 2021.
  * Has a group of commands, the description of which you can get by "help commandname" or "? commandname":
- * Write, Randomize
+ * Write, Randomize, Exit
  * @author WindySilver
- * @version 3.8.2020
+ * @version 1.4.2021
  */
 public class Main {
 
@@ -35,7 +35,7 @@ public class Main {
     /**
      * Gives help.
      * @author WindySilver
-     * @version 3.8.2020
+     * @version 1.4.2021
      *
      */
     public static class Helper implements CommandInterface {
@@ -57,6 +57,7 @@ public class Main {
 
         @Override
         public String execute(String parametrit) {
+            bos.reset();
             helper.printMatchingTopics(parametrit.toUpperCase());
             return bos.toString();
         }
@@ -69,7 +70,7 @@ public class Main {
      * The first word's first letter is uppercase and the writing ends with a dot.
      * Format inputting: "numberword", e.g. "300orange", "4apple", "17banana".
      * @author WindySilver
-     * @version 3.8.2020
+     * @version 1.4.2021
      *
      */
     public static class Writer implements CommandInterface {
@@ -105,7 +106,7 @@ public class Main {
      * The first word's first letter is uppercase and the writing ends with a dot.
      * Format inputting: "numberword1 word2 word3", e.g. "300orange banana", "4apple pineapple grape pear orange", "17banana orange pineapple".
      * @author WindySilver
-     * @version 3.8.2020
+     * @version 1.4.2021
      *
      */
     public static class Randomizer implements CommandInterface {
@@ -149,6 +150,24 @@ public class Main {
             }
             output.append(".");
             return(output.toString());
+        }
+    }
+    
+    /**
+     * The exit command.
+     * @author WindySilver
+     * @version 1.4.2021
+     *
+     */
+    public static class Exit implements CommandInterface {
+        @Override
+        public String execute(String parameter) {
+            return (leave("Exiting..."));
+        }
+        
+        private static String leave(String parameter) {
+            System.exit(0);
+            return (parameter);
         }
     }
 
@@ -222,7 +241,7 @@ public class Main {
 
 
         private boolean isHelp(String s) {
-            return (isRight("?", s) || isRight("apua", s));
+            return (isRight("?", s) || isRight("help", s));
         }
 
 
@@ -260,6 +279,7 @@ public class Main {
         Helper hjelp = new Helper("command.txt");
         commands.add(new Command("write", new Writer()));
         commands.add(new Command("randomize", new Randomizer()));
+        commands.add(new Command("exit", new Exit()));
         commands.add(new Command("?", hjelp));
         commands.add(new Command("help", hjelp));
 
